@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <import class="ch.qos.logback.core.ConsoleAppender"/>
+    <import class="ch.qos.logback.classic.PatternLayout"/>
+    <import class="ch.qos.logback.core.encoder.LayoutWrappingEncoder"/>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <appender name="CONSOLE" class="ConsoleAppender">
+        <encoder class="LayoutWrappingEncoder">
+            <layout class="PatternLayout">
+                <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <logger name="com.ahaidychuk.dependencyversionupdater.controller.WebHookController" level="debug" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>
