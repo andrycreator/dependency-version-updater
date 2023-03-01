@@ -1,5 +1,6 @@
 package com.ahaidychuk.dependencyversionupdater.service;
 
+import com.ahaidychuk.dependencyversionupdater.model.WebHookPayload;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +12,6 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -41,13 +41,11 @@ class RepoServiceImplTest {
         assertEquals(expectedResult, actualResult);
     }
 
-    private Map<String, Object> readFileFromResources(String fileName) throws IOException {
+    private WebHookPayload readFileFromResources(String fileName) throws IOException {
         ClassPathResource resource = new ClassPathResource(fileName);
         InputStream is = resource.getInputStream();
         BufferedInputStream bis = new BufferedInputStream(is);
 
-        ObjectMapper mapper = new ObjectMapper();
-
-        return mapper.readValue(bis, new TypeReference<Map<String, Object>>(){});
+        return new ObjectMapper().readValue(bis, new TypeReference<>(){});
     }
 }

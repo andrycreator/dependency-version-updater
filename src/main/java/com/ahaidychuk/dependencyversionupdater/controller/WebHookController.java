@@ -1,5 +1,6 @@
 package com.ahaidychuk.dependencyversionupdater.controller;
 
+import com.ahaidychuk.dependencyversionupdater.model.WebHookPayload;
 import com.ahaidychuk.dependencyversionupdater.service.RepoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,8 +24,10 @@ public class WebHookController {
 
     @PostMapping(value = "/payload", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void getWebHootFromGitHub(@RequestBody Map<String, Object> body) throws JsonProcessingException {
-        String jsonPayload = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(body);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
         log.debug("Webhook payload:\n{}", jsonPayload);
-        repoService.readReleasedVersion(body);
+
+        repoService.readReleasedVersion(mapper.convertValue(body, WebHookPayload.class));
     }
 }

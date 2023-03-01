@@ -1,7 +1,7 @@
 package com.ahaidychuk.dependencyversionupdater.service;
 
-import java.util.Map;
+import com.ahaidychuk.dependencyversionupdater.model.WebHookPayload;
 
 public interface RepoService {
-    String readReleasedVersion(Map<String, Object> payload);
+    String readReleasedVersion(WebHookPayload payload);
 }
