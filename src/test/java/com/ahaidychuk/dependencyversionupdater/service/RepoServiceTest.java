@@ -6,8 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -16,10 +18,15 @@ import java.io.InputStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@ExtendWith(MockitoExtension.class)
-class RepoServiceImplTest {
+@ExtendWith(SpringExtension.class)
+@SpringBootTest()
+class RepoServiceTest {
 
-    private RepoService repoService = new RepoServiceImpl();
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private RepoService repoService;
 
     @Test
     @DisplayName("Commit with non Release message")
@@ -46,6 +53,6 @@ class RepoServiceImplTest {
         InputStream is = resource.getInputStream();
         BufferedInputStream bis = new BufferedInputStream(is);
 
-        return new ObjectMapper().readValue(bis, new TypeReference<>(){});
+        return objectMapper.readValue(bis, new TypeReference<>(){});
     }
 }

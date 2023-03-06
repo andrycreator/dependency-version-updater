@@ -6,28 +6,38 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/api/webhook")
 @RequiredArgsConstructor
-@Slf4j
 public class WebHookController {
 
+    private final ObjectMapper objectMapper;
     private final RepoService repoService;
 
     @PostMapping(value = "/payload", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void getWebHootFromGitHub(@RequestBody Map<String, Object> body) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonPayload = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
-        log.debug("Webhook payload:\n{}", jsonPayload);
+    public void getWebHookFromGitHub(@RequestBody Map<String, Object> body) {
+        if (log.isDebugEnabled()) {
+            String jsonPayload;
+            try {
+                jsonPayload = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
+            } catch (JsonProcessingException e) {
+                log.error("Error happened during deserializing incoming Webhook payload", e);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            }
+            log.debug("Webhook payload:\n{}", jsonPayload);
+        }
 
-        repoService.readReleasedVersion(mapper.convertValue(body, WebHookPayload.class));
+        repoService.readReleasedVersion(objectMapper.convertValue(body, WebHookPayload.class));
     }
 }
