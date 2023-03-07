@@ -13,23 +13,23 @@ import java.time.Duration;
 @Configuration
 public class AppConfig {
 
-    @Value("${timeout.connection}")
-    private Duration timeoutConnection;
+  @Value("${timeout.connection}")
+  private Duration timeoutConnection;
 
-    @Value("${timeout.read}")
-    private Duration timeoutRead;
+  @Value("${timeout.read}")
+  private Duration timeoutRead;
 
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder
-                .setConnectTimeout(timeoutConnection)
-                .setReadTimeout(timeoutRead)
-                .build();
-    }
+  @Bean
+  public RestTemplate restTemplate(final RestTemplateBuilder builder) {
+    return builder
+        .setConnectTimeout(timeoutConnection)
+        .setReadTimeout(timeoutRead)
+        .build();
+  }
 
-    @Bean
-    public ObjectMapper objectMapper () {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
+  @Bean
+  public ObjectMapper objectMapper() {
+    var mapper = new ObjectMapper();
+    return mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  }
 }

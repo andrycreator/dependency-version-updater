@@ -22,7 +22,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <!--Jacoco-->
-        <jacoco.version>0.8.7</jacoco.version>
+        <jacoco.plugin.version>0.8.7</jacoco.plugin.version>
         <instruction.coverage.ratio>0.8</instruction.coverage.ratio>
         <bundle.coverage.ratio>0.75</bundle.coverage.ratio>
         <!--Sonarqube-->
@@ -33,6 +33,8 @@
         <sonar.language>java</sonar.language>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.coverage.exclusions>**/config/*,**/model/*,**/*Application.java</sonar.coverage.exclusions>
+        <!--Checkstyle-->
+        <checkstyle.plugin.version>3.2.1</checkstyle.plugin.version>
     </properties>
 
     <dependencies>
@@ -45,14 +47,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <!--Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-
         <!--Testing-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -78,7 +78,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
+                <version>${jacoco.plugin.version}</version>
                 <configuration>
                     <excludes>
                         <exclude>**/model/*</exclude>
@@ -135,6 +135,23 @@
                         <phase>verify</phase>
                         <goals>
                             <goal>sonar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.plugin.version}</version>
+                <configuration>
+                    <configLocation>src/main/resources/updated_sun_checks.xml</configLocation>
+                    <suppressionsLocation>src/main/resources/suppress.xml</suppressionsLocation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>

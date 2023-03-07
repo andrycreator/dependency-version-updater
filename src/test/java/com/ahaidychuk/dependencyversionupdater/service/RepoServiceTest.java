@@ -22,37 +22,38 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest()
 class RepoServiceTest {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+  @Autowired
+  private ObjectMapper objectMapper;
 
-    @Autowired
-    private RepoService repoService;
+  @Autowired
+  private RepoService repoService;
 
-    @Test
-    @DisplayName("Commit with non Release message")
-    void testReadReleasedVersionForNonReleaseCommit() throws IOException {
-        var requestPayload = readFileFromResources("nonReleaseCommitPayload.json");
-        var result = repoService.readReleasedVersion(requestPayload);
+  @Test
+  @DisplayName("Commit with non Release message")
+  void testReadReleasedVersionForNonReleaseCommit() throws IOException {
+    var requestPayload = readFileFromResources("nonReleaseCommitPayload.json");
+    var result = repoService.readReleasedVersion(requestPayload);
 
-        assertNull(result);
-    }
+    assertNull(result);
+  }
 
-    @Test
-    @DisplayName("Commit with Release message")
-    void testReadReleasedVersionForReleaseCommit() throws IOException {
-        var expectedResult = "Commit SHA: efcf4041b8d7ff34b51c2a9aa3582af116816c62, commit message: Release v1.0.0";
-        var requestPayload = readFileFromResources("releaseCommitPayload.json");
+  @Test
+  @DisplayName("Commit with Release message")
+  void testReadReleasedVersionForReleaseCommit() throws IOException {
+    var expectedResult = "Commit SHA: efcf4041b8d7ff34b51c2a9aa3582af116816c62, commit message: Release v1.0.0";
+    var requestPayload = readFileFromResources("releaseCommitPayload.json");
 
-        var actualResult = repoService.readReleasedVersion(requestPayload);
+    var actualResult = repoService.readReleasedVersion(requestPayload);
 
-        assertEquals(expectedResult, actualResult);
-    }
+    assertEquals(expectedResult, actualResult);
+  }
 
-    private WebHookPayload readFileFromResources(String fileName) throws IOException {
-        ClassPathResource resource = new ClassPathResource(fileName);
-        InputStream is = resource.getInputStream();
-        BufferedInputStream bis = new BufferedInputStream(is);
+  private WebHookPayload readFileFromResources(String fileName) throws IOException {
+    ClassPathResource resource = new ClassPathResource(fileName);
+    InputStream is = resource.getInputStream();
+    BufferedInputStream bis = new BufferedInputStream(is);
 
-        return objectMapper.readValue(bis, new TypeReference<>(){});
-    }
+    return objectMapper.readValue(bis, new TypeReference<>() {
+    });
+  }
 }

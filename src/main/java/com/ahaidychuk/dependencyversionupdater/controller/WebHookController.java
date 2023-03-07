@@ -22,22 +22,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class WebHookController {
 
-    private final ObjectMapper objectMapper;
-    private final RepoService repoService;
+  private final ObjectMapper objectMapper;
+  private final RepoService repoService;
 
-    @PostMapping(value = "/payload", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void getWebHookFromGitHub(@RequestBody Map<String, Object> body) {
-        if (log.isDebugEnabled()) {
-            String jsonPayload;
-            try {
-                jsonPayload = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
-            } catch (JsonProcessingException e) {
-                log.error("Error happened during deserializing incoming Webhook payload", e);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-            }
-            log.debug("Webhook payload:\n{}", jsonPayload);
-        }
-
-        repoService.readReleasedVersion(objectMapper.convertValue(body, WebHookPayload.class));
+  @PostMapping(value = "/payload", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public void getWebHookFromGitHub(@RequestBody final Map<String, Object> body) {
+    if (log.isDebugEnabled()) {
+      final String jsonPayload;
+      try {
+        jsonPayload = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
+      } catch (JsonProcessingException e) {
+        log.error("Error happened during deserializing incoming Webhook payload", e);
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+      }
+      log.debug("Webhook payload:\n{}", jsonPayload);
     }
+
+    repoService.readReleasedVersion(objectMapper.convertValue(body, WebHookPayload.class));
+  }
 }

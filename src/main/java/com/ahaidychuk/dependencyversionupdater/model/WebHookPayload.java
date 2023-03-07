@@ -10,11 +10,11 @@ import java.util.List;
 @Data
 public class WebHookPayload {
 
-    private String after;   // commit Hash
-    private List<Commit> commits;
+  private String after;   // commit Hash
+  private List<Commit> commits;
 
-    @Data
-    public static class Commit {
-        String message;
-    }
+  @Data
+  public static class Commit {
+    private String message;
+  }
 }
