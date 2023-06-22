@@ -53,7 +53,6 @@ class RepoServiceTest {
     InputStream is = resource.getInputStream();
     BufferedInputStream bis = new BufferedInputStream(is);
 
-    return objectMapper.readValue(bis, new TypeReference<>() {
-    });
+    return objectMapper.readValue(bis, new TypeReference<>(){});
   }
 }

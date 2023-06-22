@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.2</version>
+        <version>3.1.0</version>
         <relativePath/>
     </parent>
 
@@ -15,12 +15,17 @@
     <artifactId>dependency-version-updater</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>DependencyVersionUpdater</name>
-    <description>Automatically updates released version of observed repository in all dependent repos</description>
+    <description>Automatically updates the released version of an observed repository in all dependent repos</description>
     <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <!--Dependency versions-->
+        <mysql.version>8.0.33</mysql.version>
+        <flyway.version>9.19.4</flyway.version>
+        <test.containers.version>1.18.3</test.containers.version>
+        <db.rider.version>1.37.1</db.rider.version>
         <!--Jacoco-->
         <jacoco.plugin.version>0.8.7</jacoco.plugin.version>
         <instruction.coverage.ratio>0.8</instruction.coverage.ratio>
@@ -32,7 +37,7 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.language>java</sonar.language>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.coverage.exclusions>**/config/*,**/model/*,**/*Application.java</sonar.coverage.exclusions>
+        <sonar.coverage.exclusions>**/config/*,**/entity/*,**/model/*,**/*Application.java</sonar.coverage.exclusions>
         <!--Checkstyle-->
         <checkstyle.plugin.version>3.2.1</checkstyle.plugin.version>
     </properties>
@@ -47,17 +52,51 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <!--Database-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+        <!--Flyway-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
         <!--Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
         <!--Testing-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${test.containers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+            <version>${test.containers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.database-rider</groupId>
+            <artifactId>rider-spring</artifactId>
+            <version>${db.rider.version}</version>
         </dependency>
     </dependencies>
 
@@ -81,8 +120,9 @@
                 <version>${jacoco.plugin.version}</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/model/*</exclude>
                         <exclude>**/config/*</exclude>
+                        <exclude>**/entity/*</exclude>
+                        <exclude>**/model/*</exclude>
                         <exclude>**/*Application.class</exclude>
                     </excludes>
                 </configuration>
@@ -149,7 +189,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>verify</phase>
+                        <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>

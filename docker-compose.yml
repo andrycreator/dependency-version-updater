@@ -1,0 +1,30 @@
+version: '3.8'
+name: dep-ver-up
+
+services:
+
+  # Database server
+  db:
+    image: mysql:8.0
+    container_name: depVerUp_db
+    command: --default-authentication-plugin=mysql_native_password --init-file /data/application/init_db.sql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    ports:
+      - 3307:3306
+    volumes:
+      - ./src/main/resources/init_db.sql:/data/application/init_db.sql
+    healthcheck:
+      test: "/usr/bin/mysql --user=depverup --password=depveruppw --execute \"SHOW DATABASES;\""
+      start_period: 15s
+      interval: 10s
+      retries: 2
+      timeout: 10s
+
+  # Sonarqube server
+  sonarqube:
+      image: sonarqube:9.9-community
+      container_name: sonarqube
+      ports:
+        - 9000:9000
+        - 9092:9092

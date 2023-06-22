@@ -1,0 +1,24 @@
+dependency:
+  - id: 1
+    project_name: activeProject_1
+    file_path: testFilePath_1
+    active: 1
+    created: 2023-06-20 21:00:41
+    last_update: 2023-06-20 21:00:41
+    used_version: 1.0.0
+
+  - id: 2
+    project_name: activeProject_2
+    file_path: testFilePath_2
+    active: 1
+    created: 2023-06-20 21:15:06
+    last_update: 2023-06-20 21:15:06
+    used_version: 1.0.0
+
+  - id: 3
+    project_name: inactiveProject_3
+    file_path: testFilePath_2
+    active: 0
+    created: 2023-06-20 21:20:43
+    last_update: 2023-06-20 21:20:43
+    used_version: 1.0.0
