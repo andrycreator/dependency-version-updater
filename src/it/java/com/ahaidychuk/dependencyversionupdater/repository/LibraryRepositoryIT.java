@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -26,6 +25,6 @@ class LibraryRepositoryIT extends DBTestContainer {
     final var expectedLibraryName = "library_1";
     final var library = libraryRepository.findByLibraryName(expectedLibraryName);
 
-    assertThat(library.get().getLibraryName(), is(expectedLibraryName));
+    assertThat(library.get().getLibraryName()).isEqualTo(expectedLibraryName);
   }
 }

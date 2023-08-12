@@ -10,6 +10,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
   List<Project> findAllByActiveTrue();
 
-  @Query("FROM Project p JOIN p.projectLibraries pl JOIN pl.library l WHERE l.libraryName = :libraryName")
+  @Query("FROM Project p JOIN p.projectLibraries pl JOIN pl.library lib WHERE lib.libraryName = :libraryName")
   List<Project> findByLibraryName(String libraryName);
 }

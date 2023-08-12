@@ -9,11 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.stream.Collectors;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -29,11 +25,10 @@ class ProjectRepositoryIT extends DBTestContainer {
   void testFindAllActive() {
     final var projects = projectRepository.findAllByActiveTrue();
 
-    assertThat(projects, hasSize(2));
-    assertThat(
-            projects.stream().map(Project::getProjectName).collect(Collectors.toList()),
-            containsInAnyOrder("activeProject_1", "activeProject_2")
-    );
+    assertThat(projects).hasSize(2);
+    assertThat(projects)
+            .extracting(Project::getProjectName)
+            .containsExactlyInAnyOrder("activeProject_1", "activeProject_2");
   }
 
   @Test
@@ -41,10 +36,9 @@ class ProjectRepositoryIT extends DBTestContainer {
   void testFindByLibraryName() {
     final var projectsByLibrary = projectRepository.findByLibraryName("library_3");
 
-    assertThat(projectsByLibrary, hasSize(2));
-    assertThat(
-            projectsByLibrary.stream().map(Project::getProjectName).collect(Collectors.toList()),
-            containsInAnyOrder("activeProject_2", "inactiveProject_3")
-    );
+    assertThat(projectsByLibrary).hasSize(2);
+    assertThat(projectsByLibrary)
+            .extracting(Project::getProjectName)
+            .containsExactlyInAnyOrder("activeProject_2", "inactiveProject_3");
   }
 }
