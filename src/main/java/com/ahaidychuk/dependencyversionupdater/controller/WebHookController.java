@@ -29,12 +29,15 @@ public class WebHookController {
   public void getWebHookFromGitHub(@RequestBody final Map<String, Object> body) {
     if (log.isDebugEnabled()) {
       final String jsonPayload;
+
       try {
         jsonPayload = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
+
       } catch (JsonProcessingException e) {
         log.error("Error happened during deserializing incoming Webhook payload", e);
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
       }
+
       log.debug("Webhook payload:\n{}", jsonPayload);
     }
 

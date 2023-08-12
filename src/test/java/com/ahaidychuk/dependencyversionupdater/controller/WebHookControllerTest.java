@@ -1,9 +1,7 @@
 package com.ahaidychuk.dependencyversionupdater.controller;
 
-import com.ahaidychuk.dependencyversionupdater.model.WebHookPayload;
 import com.ahaidychuk.dependencyversionupdater.service.RepoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,10 +19,8 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
