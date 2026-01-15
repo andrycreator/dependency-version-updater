@@ -13,8 +13,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 class RepoServiceTest {
 
@@ -29,23 +29,23 @@ class RepoServiceTest {
   }
 
   @Test
-  @DisplayName("Release commit message")
+  @DisplayName("Non-release commit message")
   void testReadReleasedVersionForNonReleaseCommit() throws IOException {
     var requestPayload = readFileFromResources("nonReleaseCommitPayload.json");
-    var result = repoService.readReleasedVersion(requestPayload);
+    var actualResult = repoService.readReleasedVersion(requestPayload);
 
-    assertNull(result);
+    assertThat(actualResult).isNull();
   }
 
   @Test
-  @DisplayName("Non-release commit message")
+  @DisplayName("Release commit message")
   void testReadReleasedVersionForReleaseCommit() throws IOException {
     var expectedResult = "Commit SHA: efcf4041b8d7ff34b51c2a9aa3582af116816c62, commit message: Release v1.0.0";
     var requestPayload = readFileFromResources("releaseCommitPayload.json");
 
     var actualResult = repoService.readReleasedVersion(requestPayload);
 
-    assertEquals(expectedResult, actualResult);
+    assertThat(actualResult).isEqualTo(expectedResult);
   }
 
   private WebHookPayload readFileFromResources(String fileName) throws IOException {
@@ -53,7 +53,6 @@ class RepoServiceTest {
     InputStream is = resource.getInputStream();
     BufferedInputStream bis = new BufferedInputStream(is);
 
-    return objectMapper.readValue(bis, new TypeReference<>() {
-    });
+    return objectMapper.readValue(bis, new TypeReference<>(){});
   }
 }

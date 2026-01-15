@@ -1,0 +1,18 @@
+library:
+  - id: 1
+    library_name: library_1
+    created: 2023-07-20 20:20:20
+    last_update: 2023-07-20 20:20:20
+    version: 1.0.0
+
+  - id: 2
+    library_name: library_2
+    created: 2023-07-21 21:21:21
+    last_update: 2023-07-21 21:21:21
+    version: 2.2.0
+
+  - id: 3
+    library_name: library_3
+    created: 2023-07-22 22:22:22
+    last_update: 2023-07-22 22:22:22
+    version: 3.3.3
